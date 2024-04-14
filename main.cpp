@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "matrix.h"
+#include "matrix.hpp"
 
 using std::cin;
 using std::cout;
@@ -8,12 +8,18 @@ using std::endl;
 
 int main()
 {
-    unsigned rows;
+
+    Matrix<int> m;
+    Matrix<double> m1(3, 4);
+    Matrix<double> m2 (m1);
+
+
+    /*unsigned rows;
     unsigned cols;
     cin >> rows;
     cin >> cols;
 
-    Matrix matrix(rows, cols);
+    Matrix<int> matrix(rows, cols);
     cin >> matrix;
     cout << matrix;
 
@@ -85,7 +91,7 @@ int main()
     cout << one;
 
     Matrix transp = matrix.transpose();
-    cout << transp;
+    cout << transp;*/
 
     return 0;
 }
