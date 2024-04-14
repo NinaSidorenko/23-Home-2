@@ -13,6 +13,17 @@ int main()
     Matrix<double> m1(3, 4);
     Matrix<double> m2 (m1);
 
+    std::ifstream in("matrix.txt");
+
+    try
+    {
+        Matrix <int> m3 (in);
+    }
+    catch(const std::string& error_message)
+    {
+        cout << error_message << endl;
+    }
+
 
     /*unsigned rows;
     unsigned cols;

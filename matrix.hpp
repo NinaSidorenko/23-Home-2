@@ -2,6 +2,7 @@
 #define Matrix_HPP
 
 #include <iostream>
+#include <fstream>
 
 template <typename T>
 class Matrix
@@ -80,17 +81,33 @@ class Matrix
             }
         }
 
-        /*Matrix (std::istream& is)
+        Matrix (std::ifstream& is)//считывание из файла
         {
             if (is.is_open())
             {
                 is >> matr_rows;
                 is >> matr_cols;
 
+                matrix = new T* [matr_rows];
                 
+                for (size_t i = 0; i < matr_rows; ++i)
+                {
+                    matrix[i] = new T[matr_cols];
+                }   
+                for (size_t i = 0; i < matr_rows; ++i)
+                {
+                    for (size_t j = 0; j < matr_cols; ++j)
+                    {
+                        is >> matrix[i][j];
+                    }
+                }
             }
-             
-        }*/
+
+            else
+            {
+                throw "Stream is not opened";
+            }
+        }
 
         ~Matrix ()//деструктор
         {
