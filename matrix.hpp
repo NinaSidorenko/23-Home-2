@@ -141,8 +141,19 @@ class Matrix
         void setrows (size_t rows) {matr_rows = rows;}
         void setcols (size_t cols) {matr_cols = cols;}
 
-        /*Matrix& operator =  (const Matrix &);
-        Matrix operator +   (const Matrix &) const;
+        Matrix<T>& operator =  (const Matrix<T>& other)
+        {
+            if (this != &other)
+            {
+                this->matr_rows = other.matr_rows;
+                this->matr_cols = other.matr_cols;
+                this->matrix = other.matrix;
+            }
+            return *this;
+        }
+
+
+        /*Matrix operator +   (const Matrix &) const;
         Matrix operator -   (const Matrix &) const;
         Matrix operator *   (const Matrix &) const;
         Matrix operator *   (const double)   const;
@@ -215,4 +226,4 @@ std::ostream& operator << (std::ostream& os, Matrix<T>& matr)
     return os;
 }
 
-#endif
+#endif 
