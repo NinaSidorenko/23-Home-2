@@ -31,11 +31,11 @@ class Matrix
             }*/
         }
 
-        Matrix (const Matrix<T> &other)//копирования
+        Matrix (const Matrix<T> &other): matr_rows (other.matr_rows), matr_cols (other.matr_cols), matrix (NULL)//копирования
         {
+            if (other.matrix != NULL){
             matrix = new T* [other.matr_rows];
-            matr_rows = other.matr_rows;
-            matr_cols = other.matr_cols;
+
             for (unsigned i = 0; i < matr_rows; ++i)
             {
                 matrix[i] = new T[matr_cols];
@@ -47,35 +47,39 @@ class Matrix
                     matrix[i][j] = other.matrix[i][j];
                 }
             }
+            }
         }
 
-        Matrix (const Matrix<T>& matr, size_t row, size_t col)//создание алгебраического дополнения
+        Matrix (const Matrix<T>& matr, size_t row, size_t col): matr_rows (matr.matr_rows), matr_cols(matr.matr_cols), matrix (NULL)//создание алгебраического дополнения
         {
-            matrix = new T* [matr_rows];
-            for (unsigned i = 0; i < matr_rows; ++i)
+            if (matr.matrix != NULL)
             {
-                matrix[i] = new T[matr_cols];
-            }
-            for (unsigned i = 0; i < matr.matr_rows; ++i)
-            {
-                if (i < row)
+                matrix = new T* [matr_rows];
+                for (unsigned i = 0; i < matr_rows; ++i)
                 {
-                    for (unsigned j = 0; j < matr.matr_cols; ++j)
-                    {       
-                        if (j < col)
-                            matrix[i][j] = matr.matrix[i][j];
-                        if (j > col)
-                            matrix[i][j - 1] = matr.matrix[i][j];
-                    }
+                    matrix[i] = new T[matr_cols];
                 }
-                if (i > row)
+                for (unsigned i = 0; i < matr.matr_rows; ++i)
                 {
-                    for (unsigned j = 0; j < matr.matr_cols; ++j)
+                    if (i < row)
                     {
-                        if (j < col)
-                            matrix[i - 1][j] = matr.matrix[i][j];
-                        if (j > col)
-                            matrix[i - 1][j - 1] = matr.matrix[i][j];
+                        for (unsigned j = 0; j < matr.matr_cols; ++j)
+                        {       
+                            if (j < col)
+                                matrix[i][j] = matr.matrix[i][j];
+                            if (j > col)
+                                matrix[i][j - 1] = matr.matrix[i][j];
+                        }
+                    }
+                    if (i > row)
+                    {
+                        for (unsigned j = 0; j < matr.matr_cols; ++j)
+                        {
+                            if (j < col)
+                                matrix[i - 1][j] = matr.matrix[i][j];
+                            if (j > col)
+                                matrix[i - 1][j - 1] = matr.matrix[i][j];
+                        }
                     }
                 }
             }
