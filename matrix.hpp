@@ -153,34 +153,60 @@ class Matrix
         }
 
 
-        /*Matrix operator +   (const Matrix &) const;
-        Matrix operator -   (const Matrix &) const;
-        Matrix operator *   (const Matrix &) const;
-        Matrix operator *   (const double)   const;
-        bool   operator ==  (const Matrix &) const;
-        bool   operator ==  (const double)   const;
-        bool   operator !=  (const Matrix &) const;
+        Matrix<T> operator + (const Matrix<T>& right) const
+        {
+            if ((matr_rows == right.matr_rows) && (matr_cols == right.matr_cols))
+            {
+                Matrix<T> result(matr_rows, matr_cols);
+                T** matrix = new T* [matr_rows];
+                for (size_t i = 0; i < matr_rows; ++i)
+                {
+                    matrix [i] = new T [matr_cols];
+                    for (size_t j = 0; j < matr_cols; ++j)
+                    {
+                        matrix[i][j] = matrix[i][j] + right.matrix[i][j];
+                    }
+                }
+                result.setmatrix (matrix);
+                return result;
+            }
+            else
+            {
+                throw "Matrices have not equal sizes";
+            }
+        }
 
-        Matrix elem_preobr_1 (unsigned, unsigned);
-        Matrix elem_preobr_2 (unsigned, double);
-        Matrix elem_preobr_3 (unsigned, unsigned, double);
         
-        double determ () const;
+        Matrix<T> operator -   (const Matrix<T>& right) const
+        {
+            if ((matr_rows == right.matr_rows) && (matr_cols == right.matr_cols))
+            {
+                Matrix<T> result(matr_rows, matr_cols);
+                T** matrix = new T* [matr_rows];
+                for (size_t i = 0; i < matr_rows; ++i)
+                {
+                    matrix [i] = new T [matr_cols];
+                    for (size_t j = 0; j < matr_cols; ++j)
+                    {
+                        matrix[i][j] = matrix[i][j] - right.matrix[i][j];
+                    }
+            }
+            result.setmatrix (matrix);  
+            return result;
+            }
+            else
+            {
+                throw "Matrices have not equal sizes";
+            }
+        }
+
+        /*Matrix operator *   (const Matrix &) const;
+        Matrix operator *   (const double)   const;*/
+        
+        /*double determ () const;
         Matrix operator ! ();
         Matrix transpose() const;*/
 };
-
-/*std::istream& operator >> (std::istream& is, Matrix& matr)
-{
-    for (unsigned i = 0; i < matr.getrows(); ++i)
-    {
-        for (unsigned j = 0; j < matr.getcols(); ++j)
-        {
-            is >> matr.el(i, j);
-        }
-    }
-    return is;
-}*/
 
 template <typename T> // ввод матрицы
 std::istream& operator >> (std::istream& is, Matrix<T>& matr)

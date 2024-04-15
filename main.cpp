@@ -10,8 +10,8 @@ int main()
 {
 
     Matrix<int> m;
-    Matrix<double> m1(3, 4);
-    Matrix<double> m2 (m1);
+    /*Matrix<double> m1(3, 4);
+    Matrix<double> m2 (m1);*/
 
     std::ifstream in("matrix.txt");
 
@@ -29,7 +29,19 @@ int main()
         in >> m;
     }
 
-    cout << m;
+    /*cout << m.getrows() << endl;
+    cout << m;*/
+
+    Matrix <int> m4;
+    cin >> m4;
+
+    Matrix<int> m5 = m + m4;
+
+    Matrix<int> m6 = m + m4;
+
+    cout << m5;
+
+    cout << m6;
 
     /*unsigned rows;
     unsigned cols;
