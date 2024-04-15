@@ -137,6 +137,7 @@ class Matrix
         size_t& getrows() {return matr_rows;} //возврат количества строк
         size_t& getcols() {return matr_cols;} //возврат количества столбцов
         
+        void setmatrix(T** matr) {matrix = matr;}
         void setrows (size_t rows) {matr_rows = rows;}
         void setcols (size_t cols) {matr_cols = cols;}
 
@@ -184,16 +185,18 @@ std::istream& operator >> (std::istream& is, Matrix<T>& matr)
         is >> cols;
         matr.setcols (cols);
     }
-    
-    matr = new T* [matr.getrows()];
+
+    T** matrix = new T* [matr.getrows()];
     for (size_t i = 0; i < matr.getrows(); ++i)
     {
-        matr[i] = new T [matr.getcols()];
+        matrix[i] = new T [matr.getcols()];
         for (size_t j = 0; j < matr.getcols(); ++j)
         {
-            is >> matr.el(i, j);
+            is >> matrix[i][j];
         }
     }
+
+    matr.setmatrix(matrix);
     return is;
 }
 
