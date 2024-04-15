@@ -136,6 +136,9 @@ class Matrix
 
         size_t& getrows() {return matr_rows;} //возврат количества строк
         size_t& getcols() {return matr_cols;} //возврат количества столбцов
+        
+        void setrows (size_t rows) {matr_rows = rows;}
+        void setcols (size_t cols) {matr_cols = cols;}
 
         /*Matrix& operator =  (const Matrix &);
         Matrix operator +   (const Matrix &) const;
@@ -166,6 +169,33 @@ class Matrix
     }
     return is;
 }*/
+
+template <typename T> // ввод матрицы
+std::istream& operator >> (std::istream& is, Matrix<T>& matr)
+{
+    if (matr.getcols() == 0 or matr.getrows() == 0)
+    {
+        size_t rows = 0;
+        size_t cols = 0;
+        
+        is >> rows;
+        matr.setrows(rows);
+
+        is >> cols;
+        matr.setcols (cols);
+    }
+    
+    matr = new T* [matr.getrows()];
+    for (size_t i = 0; i < matr.getrows(); ++i)
+    {
+        matr[i] = new T [matr.getcols()];
+        for (size_t j = 0; j < matr.getcols(); ++j)
+        {
+            is >> matr.el(i, j);
+        }
+    }
+    return is;
+}
 
 template <typename T> // вывод матрицы
 std::ostream& operator << (std::ostream& os, Matrix<T>& matr)

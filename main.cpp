@@ -15,13 +15,21 @@ int main()
 
     std::ifstream in("matrix.txt");
 
-    Matrix <int> m3 (in);
+    /*Matrix <int> m3 (in);
     cout << m3.el(1, 1) << endl;
 
     cout << m1.getrows() << endl;
     cout << m2.getcols() << endl;
 
     cout << m3;
+
+    std::ifstream in1("matrix.txt");*/
+    if (in.is_open())
+    {
+        in >> m;
+    }
+
+    cout << m;
 
     /*unsigned rows;
     unsigned cols;
