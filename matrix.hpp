@@ -118,11 +118,22 @@ class Matrix
             delete[] matrix;
         }
 
-        /*T& el     (unsigned, unsigned) const;
-        unsigned& getrows() {return matr_rows;}
-        unsigned& getcols() {return matr_cols;}        
+        T& el (size_t i, size_t j) const //возврат элемента
+        {
+            if (i < matr_rows && j < matr_cols)
+            {
+                 return matrix[i][j];
+            }
+            else
+            {
+                 throw (std::out_of_range("Array::operator[] wrong index"));
+            }
+        }
 
-        Matrix& operator =  (const Matrix &);
+        size_t& getrows() {return matr_rows;} //возврат количества строк
+        size_t& getcols() {return matr_cols;} //возврат количества столбцов
+
+        /*Matrix& operator =  (const Matrix &);
         Matrix operator +   (const Matrix &) const;
         Matrix operator -   (const Matrix &) const;
         Matrix operator *   (const Matrix &) const;
@@ -140,7 +151,31 @@ class Matrix
         Matrix transpose() const;*/
 };
 
-/*std::istream& operator >> (std::istream& is, Matrix& matr);
-std::ostream& operator << (std::ostream& os, Matrix& matr);*/
+/*std::istream& operator >> (std::istream& is, Matrix& matr)
+{
+    for (unsigned i = 0; i < matr.getrows(); ++i)
+    {
+        for (unsigned j = 0; j < matr.getcols(); ++j)
+        {
+            is >> matr.el(i, j);
+        }
+    }
+    return is;
+}*/
+
+template <typename T> // вывод матрицы
+std::ostream& operator << (std::ostream& os, Matrix<T>& matr)
+{
+    for (size_t i = 0; i < matr.getrows(); ++i)
+    {
+        os << matr.el(i, 0);
+        for (size_t j = 1; j < matr.getcols(); ++j)
+        {
+            os << " " << matr.el(i, j);
+        }
+        os << std::endl;
+    }
+    return os;
+}
 
 #endif

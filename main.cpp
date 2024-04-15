@@ -15,15 +15,13 @@ int main()
 
     std::ifstream in("matrix.txt");
 
-    try
-    {
-        Matrix <int> m3 (in);
-    }
-    catch(const std::string& error_message)
-    {
-        cout << error_message << endl;
-    }
+    Matrix <int> m3 (in);
+    cout << m3.el(1, 1) << endl;
 
+    cout << m1.getrows() << endl;
+    cout << m2.getcols() << endl;
+
+    cout << m3;
 
     /*unsigned rows;
     unsigned cols;
