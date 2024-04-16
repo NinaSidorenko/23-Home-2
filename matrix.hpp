@@ -158,16 +158,16 @@ class Matrix
             if ((matr_rows == right.matr_rows) && (matr_cols == right.matr_cols))
             {
                 Matrix<T> result(matr_rows, matr_cols);
-                T** matrix = new T* [matr_rows];
+                T** res_matrix = new T* [matr_rows];
                 for (size_t i = 0; i < matr_rows; ++i)
                 {
-                    matrix [i] = new T [matr_cols];
+                    res_matrix [i] = new T [matr_cols];
                     for (size_t j = 0; j < matr_cols; ++j)
                     {
-                        matrix[i][j] = matrix[i][j] + right.matrix[i][j];
+                        res_matrix[i][j] = matrix[i][j] + right.matrix[i][j];
                     }
                 }
-                result.setmatrix (matrix);
+                result.setmatrix (res_matrix);
                 return result;
             }
             else
@@ -182,16 +182,16 @@ class Matrix
             if ((matr_rows == right.matr_rows) && (matr_cols == right.matr_cols))
             {
                 Matrix<T> result(matr_rows, matr_cols);
-                T** matrix = new T* [matr_rows];
+                T** res_matrix = new T* [matr_rows];
                 for (size_t i = 0; i < matr_rows; ++i)
                 {
-                    matrix [i] = new T [matr_cols];
+                    res_matrix [i] = new T [matr_cols];
                     for (size_t j = 0; j < matr_cols; ++j)
                     {
-                        matrix[i][j] = matrix[i][j] - right.matrix[i][j];
+                        res_matrix[i][j] = matrix[i][j] - right.matrix[i][j];
                     }
             }
-            result.setmatrix (matrix);  
+            result.setmatrix (res_matrix);  
             return result;
             }
             else
