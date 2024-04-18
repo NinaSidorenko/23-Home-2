@@ -245,6 +245,20 @@ class Matrix
         /*double determ () const;
         Matrix operator ! ();
         Matrix transpose() const;*/
+
+        static Matrix<int> zero_matr (size_t rows, size_t cols)
+        {
+            int** matr = new int* [rows];
+            for (size_t i = 0; i < rows; ++i)
+            {
+                matr[i] = new int [cols];
+                for (size_t j = 0; j < cols; ++j)
+                    matr[i][j] = 0;
+            }
+            Matrix<int> result (cols, rows, matr);
+
+            return result;
+        }
 };
 
 template <typename T> // ввод матрицы
