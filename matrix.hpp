@@ -246,16 +246,35 @@ class Matrix
         Matrix operator ! ();
         Matrix transpose() const;*/
 
-        static Matrix<int> zero_matr (size_t rows, size_t cols)
+        static Matrix<int> zero_matr (size_t size)
         {
-            int** matr = new int* [rows];
-            for (size_t i = 0; i < rows; ++i)
+            int** matr = new int* [size];
+            for (size_t i = 0; i < size; ++i)
             {
-                matr[i] = new int [cols];
-                for (size_t j = 0; j < cols; ++j)
+                matr[i] = new int [size];
+                for (size_t j = 0; j < size; ++j)
                     matr[i][j] = 0;
             }
-            Matrix<int> result (cols, rows, matr);
+            Matrix<int> result (size, size, matr);
+
+            return result;
+        }
+
+        static Matrix<int> one_matr (size_t size)
+        {
+            int** matr = new int* [size];
+            for (size_t i = 0; i < size; ++i)
+            {
+                matr[i] = new int [size];
+                for (size_t j = 0; j < size; ++j)
+                {
+                    if (i == j)
+                        matr[i][j] = 1;
+                    else
+                        matr[i][j] = 0;
+                }
+            }
+            Matrix<int> result (size, size, matr);
 
             return result;
         }
