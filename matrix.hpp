@@ -15,6 +15,9 @@ class Matrix
         Matrix () : matr_rows(0), matr_cols(0), matrix (NULL)// пустой
         {}
 
+        Matrix (size_t rows, size_t cols, T** matr): matr_rows(rows), matr_cols(cols), matrix (std::move(matr))
+        {}
+
         Matrix (size_t rows, size_t cols) : matr_rows(rows), matr_cols(cols), matrix (NULL)//с заданными размерами
         {
             /*matrix = new double* [matr_rows];
@@ -137,7 +140,7 @@ class Matrix
         size_t& getrows() {return matr_rows;} //возврат количества строк
         size_t& getcols() {return matr_cols;} //возврат количества столбцов
         
-        void setmatrix(T** matr) {matrix = matr;}
+        void setmatrix(T** matr) {matrix = std::move(matr);}
         void setrows (size_t rows) {matr_rows = rows;}
         void setcols (size_t cols) {matr_cols = cols;}
 
@@ -152,12 +155,10 @@ class Matrix
             return *this;
         }
 
-
         Matrix<T> operator + (const Matrix<T>& right) const
         {
             if ((matr_rows == right.matr_rows) && (matr_cols == right.matr_cols))
             {
-                Matrix<T> result(matr_rows, matr_cols);
                 T** res_matrix = new T* [matr_rows];
                 for (size_t i = 0; i < matr_rows; ++i)
                 {
@@ -167,7 +168,7 @@ class Matrix
                         res_matrix[i][j] = matrix[i][j] + right.matrix[i][j];
                     }
                 }
-                result.setmatrix (res_matrix);
+                Matrix<T> result (matr_rows, right.matr_cols, res_matrix);
                 return result;
             }
             else
@@ -175,13 +176,11 @@ class Matrix
                 throw "Matrices have not equal sizes";
             }
         }
-
-        
+    
         Matrix<T> operator -   (const Matrix<T>& right) const
         {
             if ((matr_rows == right.matr_rows) && (matr_cols == right.matr_cols))
             {
-                Matrix<T> result(matr_rows, matr_cols);
                 T** res_matrix = new T* [matr_rows];
                 for (size_t i = 0; i < matr_rows; ++i)
                 {
@@ -191,7 +190,7 @@ class Matrix
                         res_matrix[i][j] = matrix[i][j] - right.matrix[i][j];
                     }
             }
-            result.setmatrix (res_matrix);  
+            Matrix<T> result (matr_rows, right.matr_cols, res_matrix); 
             return result;
             }
             else
@@ -200,8 +199,49 @@ class Matrix
             }
         }
 
-        /*Matrix operator *   (const Matrix &) const;
-        Matrix operator *   (const double)   const;*/
+        Matrix<T> operator * (const Matrix<T>& right) const
+        {
+            if (matr_cols == right.matr_rows)
+            {
+                T** res_matrix = new T* [matr_rows];
+                for (size_t i = 0; i < matr_rows; ++i)
+                {
+                    res_matrix[i] = new T [right.matr_cols];
+                    for (size_t j = 0; j < right.matr_cols; ++j)
+                    {
+                        for (size_t k = 0; k < matr_cols; ++k)
+                        {
+                            if (k == 0)
+                                res_matrix[i][j] = 0;
+                            res_matrix[i][j] += matrix[i][k] * right.matrix[k][j];
+                        }
+                    }
+                }
+                Matrix<T> result (matr_rows, right.matr_cols, res_matrix);
+                return result;
+            }
+            else
+            {
+                throw "Wrong matrices' sizes";
+            }
+        }
+
+
+        /*Matrix<T> operator *   (const double scalar)   const
+        {
+            Matrix<T> result(matr_rows, matr_cols);
+            T** res_matrix = new T* [matr_rows];
+            for (size_t i = 0; i < matr_rows; ++i)
+            {
+                res_matrix[i] = new T[matr_cols];
+                for (size_t j = 0; j < matr_cols; ++j)
+                {
+                    res_matrix[i][j] = matrix[i][j] * scalar;
+                }
+            }
+            result.setmatrix(res_matrix);
+            return result;
+        }*/
         
         /*double determ () const;
         Matrix operator ! ();
