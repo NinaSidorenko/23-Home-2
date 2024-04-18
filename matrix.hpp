@@ -227,9 +227,8 @@ class Matrix
         }
 
 
-        /*Matrix<T> operator *   (const double scalar)   const
+        Matrix<T> operator *   (const T scalar)   const
         {
-            Matrix<T> result(matr_rows, matr_cols);
             T** res_matrix = new T* [matr_rows];
             for (size_t i = 0; i < matr_rows; ++i)
             {
@@ -239,9 +238,9 @@ class Matrix
                     res_matrix[i][j] = matrix[i][j] * scalar;
                 }
             }
-            result.setmatrix(res_matrix);
+            Matrix<T> result(matr_rows, matr_cols, res_matrix);
             return result;
-        }*/
+        }
         
         /*double determ () const;
         Matrix operator ! ();
