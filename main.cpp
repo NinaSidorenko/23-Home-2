@@ -9,144 +9,95 @@ using std::endl;
 int main()
 {
 
-    Matrix<double> m;
-    /*Matrix<double> m1(3, 4);
-    Matrix<double> m2 (m1);*/
-
-    std::ifstream in("matrix.txt");
-
-    /*Matrix <int> m3 (in);
-    cout << m3.el(1, 1) << endl;
-
-    cout << m1.getrows() << endl;
-    cout << m2.getcols() << endl;
-
-    cout << m3;
-
-    std::ifstream in1("matrix.txt");*/
-    if (in.is_open())
+    Matrix<double> mdouble;
+    std::ifstream indouble("matrixdouble.txt");
+    if (indouble.is_open())
     {
-        in >> m;
+        indouble >> mdouble;
     }
+    cout << mdouble;
 
-    /*cout << m.getrows() << endl;
-    cout << m;*/
+    std::ifstream inint("matrixint.txt");
+    Matrix<int> mint(inint);
+    cout << mint;
 
-    Matrix <int> m4;
-    cin >> m4;
-
-    /*Matrix<int> m5 = m + m4;
-
-    Matrix<int> m6 = m - m4;
-
-    cout << m5;
-
-    cout << m6;
-
-    Matrix <int> m7 = m*m4;
-
-    cout << m7;*/
-
-    Matrix<double> m8 = m * 3.5;
-    cout << m8;
-
-    Matrix<int> m9 = m.zero_matr (5);
-    cout << m9;
-
-    Matrix<int> m10 = m.one_matr (5);
-    cout << m10;
-
-    Matrix <int> m11 = m4.transpose();
-    cout << m11;
-
-    double d = m.determ();
-    cout << d << endl;
-/*try
-{
-    Matrix <double> m12 = !m4;
-    cout << m12;
-}
-catch(const std::string& e)
-{
-    std::cerr << e << '\n';
-}*/
-    /*unsigned cols;
-    cin >> rows;
-    cin >> cols;
-
-    Matrix<int> matrix(rows, cols);
-    cin >> matrix;
-    cout << matrix;
-
-    unsigned rows1;
-    unsigned cols1;
-    cin >> rows1;
-    cin >> cols1;
-
-    Matrix matrix1(rows1, cols1);
-    cin >> matrix1;
-
-    std::ifstream in("matrix.txt");
-    if (in.is_open())
+    Matrix <char> mchar (3, 3);
+    std::ifstream inchar("matrixchar.txt");
+    if (inchar.is_open())
     {
-        in >> matrix1;
+        inchar >> mchar;
     }
+    cout << mchar;
 
-    std::ofstream out("matrix1.txt");
-    if (out.is_open())
+    Matrix <std::string> mstring (2, 2);
+    std::ifstream instring("matrixstring.txt");
+    if (instring.is_open())
     {
-        out << matrix1;
+        instring >> mstring;
     }
+    cout << mstring;
 
-    Matrix matr3 = matrix + matrix1;
-    cout << matr3 << endl;
+    Matrix <double> mdouble1 = mdouble;
+    Matrix <std::string> mstring1 = mstring;
+    Matrix <char> mchar1 = mchar;
 
-    Matrix matr4 = matrix - matrix1;
-    cout << matr4 << endl;
+    Matrix <double> mplus = mdouble + mdouble1;
+    cout << mplus;
 
-    Matrix matr5 = matrix*matrix1;
-    cout << matr5 << endl;
+    Matrix <std::string> mplus1 = mstring + mstring1;
+    cout << mplus1;
 
-    matr5 = matrix * 2;
-    cout << matr5 << endl;
+    Matrix <double> mminus = mdouble - mdouble1;
+    cout << mminus;
 
-    cout << (matrix == matrix1) << endl;
-    cout << (matrix != matrix1) << endl;
-    cout << (matrix == 3) << endl;
-    cout << (matrix1 == 3) << endl;
+    Matrix <double> mproizv = mdouble * mdouble1;
+    cout << mproizv;
 
-    Matrix matr7 = matrix.elem_preobr_1(1, 2);
-    cout << matr7 << endl;
+    Matrix <double> mproizvscal = mdouble * 3;
+    cout << mproizvscal;
 
-    matr7 = matrix.elem_preobr_1(3, 2);
-    cout << matr7 << endl;
+    Matrix <double> mproizvscal1 = mint * 3.5;
+    cout << mproizvscal1;
 
-    matr7 = matrix.elem_preobr_2(3, 2);
-    cout << matr7 << endl;
+    Matrix<int> zero = mint.zero_matr(5);
+    cout << zero;
 
-    matr7 = matrix.elem_preobr_2(2, 2);
-    cout << matr7 << endl;
-
-    matr7 = matrix.elem_preobr_2(3, 0);
-    cout << matr7 << endl;
-
-    matr7 = matrix.elem_preobr_3(3, 2, 2);
-    cout << matr7 << endl;
-
-    matr7 = matrix.elem_preobr_3(1, 2, 2);
-    cout << matr7 << endl;
-
-    cout << (matrix.determ()) << endl;
-    cout << (matrix1.determ()) << endl;
-
-    Matrix matr = !matrix;
-    cout << matr;
-    
-    Matrix one = matr * matrix;
+    Matrix<int> one = mstring.one_matr(4);
     cout << one;
 
-    Matrix transp = matrix.transpose();
-    cout << transp;*/
+    std::ofstream out("out.txt");
+    if (out.is_open())
+    {
+        out << zero;
+        out << one;
+    }
+
+    cout << mdouble.determ() << endl;
+    cout << mint.determ() << endl;
+    cout << mchar.determ() << endl;
+
+    Matrix<std::string> mstringtransp = mstring.transpose();
+    cout << mstringtransp;
+
+    Matrix<char> mchartransp = mchar.transpose();
+    cout << mchartransp;
+
+    try
+    {
+        Matrix<double> mintobr = !mint;
+        cout << mintobr;
+    }
+    catch(const char* e)
+    {
+        std::cerr << e << endl;
+    }
+
+
+    Matrix<double> mdoubleobr = !mdouble;
+    cout << mdoubleobr;
+
+    Matrix <double> rightdouble = mdouble * mdoubleobr;
+    cout << rightdouble;
 
     return 0;
 }
