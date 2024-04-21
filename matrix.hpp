@@ -11,6 +11,41 @@ class Matrix
         size_t matr_cols;
         T** matrix;
 
+        Matrix (const Matrix<T>& matr, size_t row, size_t col): matr_rows (matr.matr_rows - 1), matr_cols(matr.matr_cols - 1), matrix (NULL)//создание алгебраического дополнения
+        {
+            if (matr.matrix != NULL)
+            {
+                matrix = new T* [matr_rows];
+                for (size_t i = 0; i < matr_rows; ++i)
+                {
+                    matrix[i] = new T[matr_cols];
+                }
+                for (size_t i = 0; i < matr.matr_rows; ++i)
+                {
+                    if (i < row)
+                    {
+                        for (size_t j = 0; j < matr.matr_cols; ++j)
+                        {
+                            if (j < col)
+                                matrix[i][j] = matr.matrix[i][j];
+                            if (j > col)
+                                matrix[i][j - 1] = matr.matrix[i][j];
+                        }
+                    }
+                    if (i > row)
+                    {
+                        for (size_t j = 0; j < matr.matr_cols; ++j)
+                        {
+                            if (j < col)
+                                matrix[i - 1][j] = matr.matrix[i][j];
+                            if (j > col)
+                                matrix[i - 1][j - 1] = matr.matrix[i][j];
+                        }
+                    }
+                }
+            }
+        }
+
     public:
         Matrix () : matr_rows(0), matr_cols(0), matrix (NULL)// пустой
         {}
@@ -53,41 +88,6 @@ class Matrix
             }
         }
 
-        Matrix (const Matrix<T>& matr, size_t row, size_t col): matr_rows (matr.matr_rows - 1), matr_cols(matr.matr_cols - 1), matrix (NULL)//создание алгебраического дополнения
-        {
-            if (matr.matrix != NULL)
-            {
-                matrix = new T* [matr_rows];
-                for (size_t i = 0; i < matr_rows; ++i)
-                {
-                    matrix[i] = new T[matr_cols];
-                }
-                for (size_t i = 0; i < matr.matr_rows; ++i)
-                {
-                    if (i < row)
-                    {
-                        for (size_t j = 0; j < matr.matr_cols; ++j)
-                        {       
-                            if (j < col)
-                                matrix[i][j] = matr.matrix[i][j];
-                            if (j > col)
-                                matrix[i][j - 1] = matr.matrix[i][j];
-                        }
-                    }
-                    if (i > row)
-                    {
-                        for (size_t j = 0; j < matr.matr_cols; ++j)
-                        {
-                            if (j < col)
-                                matrix[i - 1][j] = matr.matrix[i][j];
-                            if (j > col)
-                                matrix[i - 1][j - 1] = matr.matrix[i][j];
-                        }
-                    }
-                }
-            }
-        }
-
         Matrix (std::ifstream& is)//считывание из файла
         {
             if (is.is_open())
@@ -96,11 +96,11 @@ class Matrix
                 is >> matr_cols;
 
                 matrix = new T* [matr_rows];
-                
+
                 for (size_t i = 0; i < matr_rows; ++i)
                 {
                     matrix[i] = new T[matr_cols];
-                }   
+                }
                 for (size_t i = 0; i < matr_rows; ++i)
                 {
                     for (size_t j = 0; j < matr_cols; ++j)
@@ -118,7 +118,7 @@ class Matrix
 
         ~Matrix ()//деструктор
         {
-            for (unsigned i = 0; i < matr_rows; ++i) 
+            for (unsigned i = 0; i < matr_rows; ++i)
             {
                 delete[] matrix[i];
             }
@@ -139,7 +139,7 @@ class Matrix
 
         size_t& getrows() {return matr_rows;} //возврат количества строк
         size_t& getcols() {return matr_cols;} //возврат количества столбцов
-        
+
         void setmatrix(T** matr) {matrix = std::move(matr);}
         void setrows (size_t rows) {matr_rows = rows;}
         void setcols (size_t cols) {matr_cols = cols;}
@@ -176,7 +176,7 @@ class Matrix
                 throw "Matrices have not equal sizes";
             }
         }
-    
+
         Matrix<T> operator -   (const Matrix<T>& right) const
         {
             if ((matr_rows == right.matr_rows) && (matr_cols == right.matr_cols))
@@ -190,7 +190,7 @@ class Matrix
                         res_matrix[i][j] = matrix[i][j] - right.matrix[i][j];
                     }
             }
-            Matrix<T> result (matr_rows, right.matr_cols, res_matrix); 
+            Matrix<T> result (matr_rows, right.matr_cols, res_matrix);
             return result;
             }
             else
@@ -226,7 +226,7 @@ class Matrix
             }
         }
 
-        Matrix<double> operator *   (const T scalar)   const
+        Matrix <double> operator *   (const double scalar)   const
         {
             double** res_matrix = new double* [matr_rows];
             for (size_t i = 0; i < matr_rows; ++i)
@@ -240,8 +240,8 @@ class Matrix
             Matrix<double> result(matr_rows, matr_cols, res_matrix);
             return result;
         }
-        
-    double determ() const
+
+    long double determ() const
     {
         if (matr_rows == matr_cols)
         {
@@ -249,7 +249,7 @@ class Matrix
             {
                 return matrix[0][0];
             }
-            else 
+            else
             {
                 double determ = 0;
                 for (size_t i = 0; i < matr_cols; ++i)
@@ -271,27 +271,29 @@ class Matrix
         double det = this->determ();
         if (det != 0)
         {
-            Matrix A_matr(matr_rows, matr_cols);
+          double** res_matr = new double* [matr_rows];
             for (size_t i = 0; i < matr_rows; ++i)
             {
+              res_matr[i] = new double [matr_cols];
                 for (size_t j = 0; j < matr_cols; ++j)
                 {
                     Matrix<T> minmatr(*this, i, j);
                     {
                         double mindet = minmatr.determ();
                         if (((i + j) % 2) == 0)
-                            A_matr.matrix[i][j] = mindet;
+                            res_matr[i][j] = mindet;
                         else
-                            A_matr.matrix[i][j] = -1 * mindet;
+                            res_matr[i][j] = -1 * mindet;
                     }
                 }
             }
-        
-            Matrix A_matr_transp = A_matr.transpose();
+
+            Matrix<double> A_matr (matr_rows, matr_cols, res_matr);
+            Matrix<double> A_matr_transp = A_matr.transpose();
 
             double det1 = 1 / det;
 
-            Matrix res = A_matr_transp * det1;
+            Matrix<double> res = A_matr_transp * det1;
 
             return res;
         }
@@ -355,7 +357,7 @@ std::istream& operator >> (std::istream& is, Matrix<T>& matr)
     {
         size_t rows = 0;
         size_t cols = 0;
-        
+
         is >> rows;
         matr.setrows(rows);
 
@@ -392,4 +394,4 @@ std::ostream& operator << (std::ostream& os, Matrix<T>& matr)
     return os;
 }
 
-#endif 
+#endif
