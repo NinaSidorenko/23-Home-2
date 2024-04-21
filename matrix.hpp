@@ -53,20 +53,20 @@ class Matrix
             }
         }
 
-        Matrix (const Matrix<T>& matr, size_t row, size_t col): matr_rows (matr.matr_rows), matr_cols(matr.matr_cols), matrix (NULL)//создание алгебраического дополнения
+        Matrix (const Matrix<T>& matr, size_t row, size_t col): matr_rows (matr.matr_rows - 1), matr_cols(matr.matr_cols - 1), matrix (NULL)//создание алгебраического дополнения
         {
             if (matr.matrix != NULL)
             {
                 matrix = new T* [matr_rows];
-                for (unsigned i = 0; i < matr_rows; ++i)
+                for (size_t i = 0; i < matr_rows; ++i)
                 {
                     matrix[i] = new T[matr_cols];
                 }
-                for (unsigned i = 0; i < matr.matr_rows; ++i)
+                for (size_t i = 0; i < matr.matr_rows; ++i)
                 {
                     if (i < row)
                     {
-                        for (unsigned j = 0; j < matr.matr_cols; ++j)
+                        for (size_t j = 0; j < matr.matr_cols; ++j)
                         {       
                             if (j < col)
                                 matrix[i][j] = matr.matrix[i][j];
@@ -76,7 +76,7 @@ class Matrix
                     }
                     if (i > row)
                     {
-                        for (unsigned j = 0; j < matr.matr_cols; ++j)
+                        for (size_t j = 0; j < matr.matr_cols; ++j)
                         {
                             if (j < col)
                                 matrix[i - 1][j] = matr.matrix[i][j];
@@ -226,25 +226,93 @@ class Matrix
             }
         }
 
-
-        Matrix<T> operator *   (const T scalar)   const
+        Matrix<double> operator *   (const T scalar)   const
         {
-            T** res_matrix = new T* [matr_rows];
+            double** res_matrix = new double* [matr_rows];
             for (size_t i = 0; i < matr_rows; ++i)
             {
-                res_matrix[i] = new T[matr_cols];
+                res_matrix[i] = new double[matr_cols];
                 for (size_t j = 0; j < matr_cols; ++j)
                 {
                     res_matrix[i][j] = matrix[i][j] * scalar;
                 }
             }
-            Matrix<T> result(matr_rows, matr_cols, res_matrix);
+            Matrix<double> result(matr_rows, matr_cols, res_matrix);
             return result;
         }
         
-        /*double determ () const;
-        Matrix operator ! ();
-        Matrix transpose() const;*/
+    double determ() const
+    {
+        if (matr_rows == matr_cols)
+        {
+            if (matr_rows == 1)
+            {
+                return matrix[0][0];
+            }
+            else 
+            {
+                double determ = 0;
+                for (size_t i = 0; i < matr_cols; ++i)
+                {
+                    Matrix<T> minmatr(*this, 0, i);
+                    if ((i % 2) == 0)
+                        determ += matrix[0][i] * minmatr.determ();
+                    else
+                        determ -= matrix[0][i] * minmatr.determ();
+                }
+                return determ;
+            }
+        }
+        throw ("Not Possible!");
+    }
+
+    Matrix<double> operator ! ()
+    {
+        double det = this->determ();
+        if (det != 0)
+        {
+            Matrix A_matr(matr_rows, matr_cols);
+            for (size_t i = 0; i < matr_rows; ++i)
+            {
+                for (size_t j = 0; j < matr_cols; ++j)
+                {
+                    Matrix<T> minmatr(*this, i, j);
+                    {
+                        double mindet = minmatr.determ();
+                        if (((i + j) % 2) == 0)
+                            A_matr.matrix[i][j] = mindet;
+                        else
+                            A_matr.matrix[i][j] = -1 * mindet;
+                    }
+                }
+            }
+        
+            Matrix A_matr_transp = A_matr.transpose();
+
+            double det1 = 1 / det;
+
+            Matrix res = A_matr_transp * det1;
+
+            return res;
+        }
+        else
+        {
+            throw ("Not Possible!");
+        }
+    }
+
+    Matrix<T> transpose() const
+    {
+        T** res_matr = new T* [matr_cols];
+        for (size_t i = 0; i < matr_cols; ++i)
+        {
+            res_matr[i] = new T [matr_rows];
+            for (size_t j = 0; j < matr_rows; ++j)
+                res_matr[i][j] = matrix[j][i];
+        }
+        Matrix<T> matr_transpose(matr_cols, matr_rows, res_matr);
+        return matr_transpose;
+    }
 
         static Matrix<int> zero_matr (size_t size)
         {

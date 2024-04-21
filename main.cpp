@@ -9,7 +9,7 @@ using std::endl;
 int main()
 {
 
-    Matrix<int> m;
+    Matrix<double> m;
     /*Matrix<double> m1(3, 4);
     Matrix<double> m2 (m1);*/
 
@@ -35,16 +35,42 @@ int main()
     Matrix <int> m4;
     cin >> m4;
 
-    Matrix<int> m5 = m + m4;
+    /*Matrix<int> m5 = m + m4;
 
-    Matrix<int> m6 = m + m4;
+    Matrix<int> m6 = m - m4;
 
     cout << m5;
 
     cout << m6;
 
-    /*unsigned rows;
-    unsigned cols;
+    Matrix <int> m7 = m*m4;
+
+    cout << m7;*/
+
+    Matrix<double> m8 = m * 3.5;
+    cout << m8;
+
+    Matrix<int> m9 = m.zero_matr (5);
+    cout << m9;
+
+    Matrix<int> m10 = m.one_matr (5);
+    cout << m10;
+
+    Matrix <int> m11 = m4.transpose();
+    cout << m11;
+
+    double d = m.determ();
+    cout << d << endl;
+/*try
+{
+    Matrix <double> m12 = !m4;
+    cout << m12;
+}
+catch(const std::string& e)
+{
+    std::cerr << e << '\n';
+}*/
+    /*unsigned cols;
     cin >> rows;
     cin >> cols;
 
